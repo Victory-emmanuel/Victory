@@ -19,6 +19,8 @@ export type Tables = {
       image_url: string | null;
       project_url: string | null;
       created_at: string;
+      tags: string[] | null;
+      featured: boolean | null;
     };
     Insert: {
       id?: string;
@@ -28,6 +30,8 @@ export type Tables = {
       image_url?: string | null;
       project_url?: string | null;
       created_at?: string;
+      tags?: string[] | null;
+      featured?: boolean | null;
     };
     Update: {
       id?: string;
@@ -37,6 +41,8 @@ export type Tables = {
       image_url?: string | null;
       project_url?: string | null;
       created_at?: string;
+      tags?: string[] | null;
+      featured?: boolean | null;
     };
   };
 };

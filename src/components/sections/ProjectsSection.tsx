@@ -8,10 +8,7 @@ import { Github, ExternalLink, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import type { Tables } from '@/lib/supabase';
 
-type Project = Tables['projects']['Row'] & {
-  category?: string;
-  featured?: boolean;
-};
+type Project = Tables['projects']['Row'];
 
 // Fallback image if no image is provided
 const fallbackImage = 'https://images.unsplash.com/photo-1661956602944-249bcd04b63f?q=80&w=2070&auto=format&fit=crop';
@@ -34,15 +31,7 @@ export default function ProjectsSection() {
 
         if (error) throw error;
 
-        // Add some default properties for filtering
-        const projectsWithDefaults = data.map(project => ({
-          ...project,
-          category: project.tech_stack?.includes('React') ? 'frontend' :
-                   project.tech_stack?.includes('Node.js') ? 'backend' : 'fullstack',
-          featured: Math.random() > 0.5 // Randomly set some projects as featured for demo
-        }));
-
-        setProjects(projectsWithDefaults);
+        setProjects(data);
       } catch (err) {
         console.error('Error fetching projects:', err);
         setError('Failed to load projects');
@@ -56,9 +45,14 @@ export default function ProjectsSection() {
 
   const filteredProjects = filter === 'all'
     ? projects
-    : filter === 'featured'
-      ? projects.filter(project => project.featured)
-      : projects.filter(project => project.category === filter);
+    : projects.filter(project => {
+        // For 'featured' filter, check the featured field or the 'Featured' tag
+        if (filter === 'featured') {
+          return project.featured || (project.tags && project.tags.includes('Featured'));
+        }
+        // For other filters, check if the project has the corresponding tag
+        return project.tags && project.tags.includes(filter.charAt(0).toUpperCase() + filter.slice(1));
+      });
 
   return (
     <section id="projects" className="py-20 min-h-screen">
@@ -125,11 +119,16 @@ export default function ProjectsSection() {
                       alt={project.title}
                       className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                     />
-                    {project.featured && (
+                    {(project.featured || (project.tags && project.tags.includes('Featured'))) && (
                       <Badge className="absolute top-2 right-2 bg-accent text-accent-foreground">
                         Featured
                       </Badge>
                     )}
+                    {project.tags && project.tags.filter(tag => tag !== 'Featured').map((tag, idx) => (
+                      <Badge key={idx} className="absolute top-2 left-2 bg-primary text-primary-foreground">
+                        {tag}
+                      </Badge>
+                    ))}
                   </div>
 
                   <CardContent className="p-6">

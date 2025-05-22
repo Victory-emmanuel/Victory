@@ -1,5 +1,6 @@
 
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -26,6 +27,8 @@ export default function Footer() {
             </p>
             <p className="text-xs text-muted-foreground mt-1">
               Built with React, Tailwind, and Three.js
+              <span className="mx-1">•</span>
+              <Link to="/dashboard/login" className="hover:text-primary hover:underline transition-colors">Admin Access</Link>
             </p>
           </div>
         </div>

@@ -20,9 +20,11 @@ import {
   X, 
   AlertCircle,
   Plus,
-  Trash2
+  Trash2,
+  Tag
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 
 // Form validation schema
 const projectSchema = z.object({
@@ -31,6 +33,8 @@ const projectSchema = z.object({
   tech_stack: z.array(z.string()).optional(),
   image_url: z.string().optional(),
   project_url: z.string().url('Please enter a valid URL').optional().or(z.literal('')),
+  tags: z.array(z.string()).optional(),
+  featured: z.boolean().optional(),
 });
 
 type ProjectFormValues = z.infer<typeof projectSchema>;
@@ -44,10 +48,11 @@ export default function ProjectFormPage() {
   const [techInput, setTechInput] = useState('');
   const [techStack, setTechStack] = useState<string[]>([]);
   
-  // State for image upload
-  const [imageFile, setImageFile] = useState<File | null>(null);
+  // State for tags
+  const [tags, setTags] = useState<string[]>([]);
+  const availableTags = ['Featured', 'Frontend', 'Fullstack'];
+  
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [isUploading, setIsUploading] = useState(false);
   
   // Fetch project data if in edit mode
   const { data: projects, isLoading: isLoadingProject } = useReadProjects({
@@ -75,6 +80,8 @@ export default function ProjectFormPage() {
       tech_stack: [],
       image_url: '',
       project_url: '',
+      tags: [],
+      featured: false,
     }
   });
   
@@ -87,9 +94,12 @@ export default function ProjectFormPage() {
         tech_stack: project.tech_stack || [],
         image_url: project.image_url || '',
         project_url: project.project_url || '',
+        tags: project.tags || [],
+        featured: project.featured || false,
       });
       
       setTechStack(project.tech_stack || []);
+      setTags(project.tags || []);
       setImagePreview(project.image_url || null);
     }
   }, [project, reset]);
@@ -110,12 +120,25 @@ export default function ProjectFormPage() {
     setValue('tech_stack', newTechStack);
   };
   
+  // Handle tags selection
+  const handleTagChange = (tag: string) => {
+    const newTags = tags.includes(tag)
+      ? tags.filter(t => t !== tag)
+      : [...tags, tag];
+    
+    setTags(newTags);
+    setValue('tags', newTags);
+    
+    // If the tag is 'Featured', also update the featured field
+    if (tag === 'Featured') {
+      setValue('featured', !tags.includes('Featured'));
+    }
+  };
+  
   // Handle image upload
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    
-    setImageFile(file);
     
     // Create preview
     const reader = new FileReader();
@@ -125,48 +148,20 @@ export default function ProjectFormPage() {
     reader.readAsDataURL(file);
   };
   
-  const handleRemoveImage = () => {
-    setImageFile(null);
-    setImagePreview(null);
-    setValue('image_url', '');
+
+  
+  const handleImageUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const url = e.target.value;
+    setValue('image_url', url);
+    setImagePreview(url);
   };
   
-  // Upload image to Supabase Storage
-  const uploadImage = async (file: File): Promise<string> => {
-    setIsUploading(true);
-    
-    try {
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
-      const filePath = `projects/${fileName}`;
-      
-      const { error: uploadError } = await supabase.storage
-        .from('portfolio')
-        .upload(filePath, file);
-      
-      if (uploadError) throw uploadError;
-      
-      const { data } = supabase.storage
-        .from('portfolio')
-        .getPublicUrl(filePath);
-      
-      return data.publicUrl;
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      throw new Error('Failed to upload image');
-    } finally {
-      setIsUploading(false);
-    }
-  };
+  // Remove uploadImage function
   
-  // Form submission
+  // Update form submission
   const onSubmit = async (data: ProjectFormValues) => {
     try {
-      // Upload image if there's a new file
-      if (imageFile) {
-        const imageUrl = await uploadImage(imageFile);
-        data.image_url = imageUrl;
-      }
+  
       
       if (isEditMode && id) {
         await updateProject(id, data);
@@ -182,6 +177,8 @@ export default function ProjectFormPage() {
       console.error('Form submission error:', error);
     }
   };
+  
+  // Remove upload-related UI state
   
   if (isEditMode && isLoadingProject) {
     return (
@@ -291,41 +288,44 @@ export default function ProjectFormPage() {
             </div>
             
             <div className="space-y-2">
-              <Label>Project Image</Label>
-              <div className="flex items-center gap-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => document.getElementById('image-upload')?.click()}
-                >
-                  <Upload className="mr-2 h-4 w-4" />
-                  Upload Image
-                </Button>
-                <input
-                  id="image-upload"
-                  type="file"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className="hidden"
-                />
-                {imagePreview && (
-                  <div className="relative">
-                    <img
-                      src={imagePreview}
-                      alt="Preview"
-                      className="h-16 w-16 object-cover rounded-md"
+              <Label className="flex items-center gap-2">
+                <Tag className="h-4 w-4" />
+                Project Tags
+              </Label>
+              <div className="mt-2 space-y-2">
+                {availableTags.map((tag) => (
+                  <div key={tag} className="flex items-center space-x-2">
+                    <Checkbox 
+                      id={tag.toLowerCase()} 
+                      checked={tags.includes(tag)}
+                      onCheckedChange={() => handleTagChange(tag)}
                     />
-                    <button
-                      type="button"
-                      onClick={handleRemoveImage}
-                      className="absolute -top-2 -right-2 bg-background rounded-full p-1 border border-border"
-                    >
-                      <X className="h-3 w-3" />
-                      <span className="sr-only">Remove image</span>
-                    </button>
+                    <Label htmlFor={tag.toLowerCase()} className="cursor-pointer">{tag}</Label>
                   </div>
-                )}
+                ))}
               </div>
+            </div>
+            
+
+            
+            <div className="space-y-2">
+              <Label>Project Image URL</Label>
+              <Input
+                placeholder="https://example.com/image.jpg"
+                {...register('image_url')}
+              />
+              {errors.image_url && (
+                <p className="text-sm text-destructive">{errors.image_url.message}</p>
+              )}
+              {imagePreview && (
+                <div className="mt-4">
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="h-32 w-32 object-cover rounded-md"
+                  />
+                </div>
+              )}
             </div>
             
             <div className="flex justify-end gap-4 pt-4">
@@ -338,12 +338,12 @@ export default function ProjectFormPage() {
               </Button>
               <Button
                 type="submit"
-                disabled={isCreating || isUpdating || isUploading}
+                disabled={isCreating || isUpdating}
               >
-                {(isCreating || isUpdating || isUploading) ? (
+                {(isCreating || isUpdating) ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    {isUploading ? 'Uploading...' : isEditMode ? 'Updating...' : 'Creating...'}
+                    {isEditMode ? 'Updating...' : 'Creating...'}
                   </>
                 ) : (
                   <>
