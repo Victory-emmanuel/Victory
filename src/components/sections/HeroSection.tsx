@@ -34,7 +34,7 @@ export default function HeroSection() {
           transition={{ delay: 0.2, duration: 0.8 }}
         >
           <motion.h1 
-            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-4"
+            className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-2 sm:mb-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ 
@@ -47,7 +47,7 @@ export default function HeroSection() {
           </motion.h1>
           
           <motion.h2 
-            className="text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-8"
+            className="text-lg sm:text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-6 sm:mb-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.8, duration: 0.8 }}
@@ -59,19 +59,19 @@ export default function HeroSection() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.2, duration: 0.8 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center"
+            className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center"
           >
             <Button 
-              size="lg" 
-              className="px-8"
+              size="default" 
+              className="px-4 sm:px-8 py-2 text-sm sm:text-base sm:py-6"
               onClick={handleScrollDown}
             >
               View My Work
             </Button>
             <Button 
               variant="outline" 
-              size="lg" 
-              className="px-8"
+              size="default" 
+              className="px-4 sm:px-8 py-2 text-sm sm:text-base sm:py-6"
               onClick={() => {
                 setActiveSection('contact');
                 document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });

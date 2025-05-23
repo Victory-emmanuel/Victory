@@ -33,6 +33,7 @@ const projectSchema = z.object({
   tech_stack: z.array(z.string()).optional(),
   image_url: z.string().optional(),
   project_url: z.string().url('Please enter a valid URL').optional().or(z.literal('')),
+  github_repo_url: z.string().url('Please enter a valid URL').optional().or(z.literal('')),
   tags: z.array(z.string()).optional(),
   featured: z.boolean().optional(),
 });
@@ -284,6 +285,18 @@ export default function ProjectFormPage() {
               />
               {errors.project_url && (
                 <p className="text-sm text-destructive">{errors.project_url.message}</p>
+              )}
+            </div>
+            
+            <div className="space-y-2">
+              <Label htmlFor="github_repo_url">GitHub Repository URL</Label>
+              <Input
+                id="github_repo_url"
+                {...register('github_repo_url')}
+                placeholder="https://github.com/username/repo"
+              />
+              {errors.github_repo_url && (
+                <p className="text-sm text-destructive">{errors.github_repo_url.message}</p>
               )}
             </div>
             

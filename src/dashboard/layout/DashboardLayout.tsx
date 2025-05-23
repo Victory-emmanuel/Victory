@@ -49,7 +49,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <div className="absolute bottom-4 left-4 right-4">
           <Button 
             variant="outline" 
-            className="w-full justify-start" 
+            className="w-fit justify-start" 
             onClick={handleSignOut}
           >
             <LogOut className="mr-2 h-4 w-4" />

@@ -63,8 +63,8 @@ export default function ContactSection() {
           transition={{ duration: 0.5 }}
           className="mb-12 text-center"
         >
-          <h2 className="text-3xl font-bold mb-2">Contact Me</h2>
-          <div className="w-20 h-1 bg-primary mx-auto mb-8"></div>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-2">Contact Me</h2>
+          <div className="w-16 sm:w-20 h-1 bg-primary mx-auto mb-6 sm:mb-8"></div>
           <p className="max-w-xl mx-auto text-muted-foreground">
             Have a question or want to work together? Send me a message!
           </p>
@@ -78,8 +78,8 @@ export default function ContactSection() {
             transition={{ duration: 0.5 }}
           >
             <Card className="glass-panel h-full">
-              <CardContent className="p-8">
-                <h3 className="text-2xl font-semibold mb-6">Get in Touch</h3>
+              <CardContent className="p-4 sm:p-6 md:p-8">
+                <h3 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Get in Touch</h3>
                 
                 <div className="space-y-6">
                   {contactInfo.map((item, index) => (
@@ -103,7 +103,7 @@ export default function ContactSection() {
                 </div>
                 
                 <div className="mt-10">
-                  <h3 className="text-xl font-semibold mb-4">Follow Me</h3>
+                  <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4">Follow Me</h3>
                   <div className="flex space-x-4">
                     {/* Social Icons */}
                     <a href="#" className="p-2 rounded-full bg-secondary/20 hover:bg-primary/20 transition-colors">
@@ -131,10 +131,10 @@ export default function ContactSection() {
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <Card className="glass-panel">
-              <CardContent className="p-8">
-                <h3 className="text-2xl font-semibold mb-6">Send a Message</h3>
+              <CardContent className="p-4 sm:p-6 md:p-8">
+                <h3 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">Send a Message</h3>
                 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label htmlFor="name" className="text-sm">Your Name</label>

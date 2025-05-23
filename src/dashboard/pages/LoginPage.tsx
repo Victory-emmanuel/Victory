@@ -119,7 +119,17 @@ export default function LoginPage() {
           <p className="text-sm text-muted-foreground">
             This is a protected area. Only authorized personnel can access.
           </p>
+        
         </CardFooter>
+        <div className="flex items-center justify-between p-6">
+                <Label htmlFor="password"></Label>
+                <Link
+                  to="/"
+                  className="text-xs text-primary hover:underline"
+                >
+                 Go home
+                </Link>
+              </div>
       </Card>
     </div>
   );

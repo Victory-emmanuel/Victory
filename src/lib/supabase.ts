@@ -18,6 +18,7 @@ export type Tables = {
       tech_stack: string[] | null;
       image_url: string | null;
       project_url: string | null;
+      github_repo_url: string | null;
       created_at: string;
       tags: string[] | null;
       featured: boolean | null;
@@ -29,6 +30,7 @@ export type Tables = {
       tech_stack?: string[] | null;
       image_url?: string | null;
       project_url?: string | null;
+      github_repo_url?: string | null;
       created_at?: string;
       tags?: string[] | null;
       featured?: boolean | null;
@@ -40,6 +42,7 @@ export type Tables = {
       tech_stack?: string[] | null;
       image_url?: string | null;
       project_url?: string | null;
+      github_repo_url?: string | null;
       created_at?: string;
       tags?: string[] | null;
       featured?: boolean | null;

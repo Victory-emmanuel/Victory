@@ -12,17 +12,17 @@ export default function Footer() {
       animate={{ opacity: 1 }}
       transition={{ delay: 0.2, duration: 0.5 }}
     >
-      <div className="container">
+      <div className="container px-4 sm:px-6">
         <div className="flex flex-col md:flex-row justify-between items-center">
-          <div className="mb-4 md:mb-0">
-            <div className="text-xl font-bold text-gradient">DevPortfolio</div>
-            <p className="text-sm text-muted-foreground">
+          <div className="mb-3 md:mb-0">
+            <div className="text-lg sm:text-xl font-bold text-gradient">DevPortfolio</div>
+            <p className="text-xs sm:text-sm text-muted-foreground">
               Building the web with passion and precision.
             </p>
           </div>
           
           <div className="text-center md:text-right">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-xs sm:text-sm text-muted-foreground">
               &copy; {currentYear} Your Name. All rights reserved.
             </p>
             <p className="text-xs text-muted-foreground mt-1">

@@ -103,7 +103,7 @@ export default function ProjectsSection() {
             </Button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {filteredProjects.map((project, index) => (
               <motion.div
                 key={project.id}
@@ -133,7 +133,7 @@ export default function ProjectsSection() {
 
                   <CardContent className="p-6">
                     <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-                    <p className="text-muted-foreground mb-4">{project.description || 'No description available'}</p>
+                    <p className="text-muted-foreground mb-4 line-clamp-10">{project.description || 'No description available'}</p>
 
                     <div className="flex flex-wrap gap-2">
                       {project.tech_stack?.map((tech, idx) => (
@@ -148,7 +148,7 @@ export default function ProjectsSection() {
                     </div>
                   </CardContent>
 
-                  <CardFooter className="px-6 pb-6 pt-0 flex gap-4">
+                  <CardFooter className="px-6 pb-6 pt-0 flex flex-wrap gap-2 sm:gap-4">
                     {project.project_url && (
                       <Button
                         size="sm"
@@ -164,7 +164,7 @@ export default function ProjectsSection() {
                       size="sm"
                       variant="outline"
                       className="flex gap-2 items-center"
-                      onClick={() => window.open('https://github.com', '_blank')}
+                      onClick={() => window.open(project.github_repo_url || 'https://github.com', '_blank')}
                     >
                       <Github size={16} />
                       Code

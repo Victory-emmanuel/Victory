@@ -15,8 +15,8 @@ export default function AboutSection() {
           transition={{ duration: 0.5 }}
           className="mb-12 text-center"
         >
-          <h2 className="text-3xl font-bold mb-2">About Me</h2>
-          <div className="w-20 h-1 bg-primary mx-auto mb-8"></div>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-2">About Me</h2>
+          <div className="w-16 sm:w-20 h-1 bg-primary mx-auto mb-6 sm:mb-8"></div>
         </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
@@ -28,8 +28,8 @@ export default function AboutSection() {
           >
             <Card className="glass-panel overflow-hidden">
               <CardContent className="p-0">
-                <div className="bg-gradient-to-br from-primary/20 to-accent/20 p-8">
-                  <h3 className="text-2xl font-semibold mb-4">Who am I</h3>
+                <div className="bg-gradient-to-br from-primary/20 to-accent/20 p-4 sm:p-6 md:p-8">
+                  <h3 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Who am I</h3>
                   <p className="text-muted-foreground mb-4">
                     I'm a passionate full-stack developer with expertise in modern web technologies. 
                     I create responsive, accessible, and high-performance web applications with clean 
@@ -39,7 +39,7 @@ export default function AboutSection() {
                     With a background in [your background], I bring a unique perspective to software development,
                     focusing on solving real-world problems with elegant technical solutions.
                   </p>
-                  <div className="flex flex-wrap gap-3">
+                  <div className="flex flex-wrap gap-2 sm:gap-3">
                     <Button variant="secondary" size="sm">
                       <FileText size={16} className="mr-2" />
                       Resume
@@ -65,27 +65,27 @@ export default function AboutSection() {
             transition={{ duration: 0.5, delay: 0.4 }}
           >
             <Card className="glass-panel">
-              <CardContent className="p-8">
-                <h3 className="text-2xl font-semibold mb-4">Experience & Education</h3>
+              <CardContent className="p-4 sm:p-6 md:p-8">
+                <h3 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">Experience & Education</h3>
                 
                 <div className="space-y-6">
                   <div className="relative pl-6 border-l border-muted">
                     <div className="absolute w-3 h-3 bg-primary rounded-full -left-[6.5px] top-1"></div>
-                    <h4 className="text-lg font-medium">Senior Developer</h4>
+                    <h4 className="text-base sm:text-lg font-medium">Senior Developer</h4>
                     <p className="text-muted-foreground">Company Name • 2021 - Present</p>
                     <p className="mt-2">Led development of several key projects and mentored junior developers.</p>
                   </div>
                   
                   <div className="relative pl-6 border-l border-muted">
                     <div className="absolute w-3 h-3 bg-primary rounded-full -left-[6.5px] top-1"></div>
-                    <h4 className="text-lg font-medium">Frontend Developer</h4>
+                    <h4 className="text-base sm:text-lg font-medium">Frontend Developer</h4>
                     <p className="text-muted-foreground">Company Name • 2018 - 2021</p>
                     <p className="mt-2">Built responsive web applications with React and TypeScript.</p>
                   </div>
                   
                   <div className="relative pl-6 border-l border-muted">
                     <div className="absolute w-3 h-3 bg-primary rounded-full -left-[6.5px] top-1"></div>
-                    <h4 className="text-lg font-medium">Computer Science, BSc</h4>
+                    <h4 className="text-base sm:text-lg font-medium">Computer Science, BSc</h4>
                     <p className="text-muted-foreground">University Name • 2014 - 2018</p>
                     <p className="mt-2">Specialized in software engineering and web development.</p>
                   </div>

@@ -44,8 +44,8 @@ export default function SkillsSection() {
           transition={{ duration: 0.5 }}
           className="mb-12 text-center"
         >
-          <h2 className="text-3xl font-bold mb-2">My Skills</h2>
-          <div className="w-20 h-1 bg-primary mx-auto mb-8"></div>
+          <h2 className="text-2xl sm:text-3xl font-bold mb-2">My Skills</h2>
+          <div className="w-16 sm:w-20 h-1 bg-primary mx-auto mb-6 sm:mb-8"></div>
           <p className="max-w-xl mx-auto text-muted-foreground">
             My tech stack and areas of expertise in development and design.
           </p>
@@ -60,8 +60,8 @@ export default function SkillsSection() {
             className="space-y-6"
           >
             <Card className="glass-panel">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-4 flex items-center">
+              <CardContent className="p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 flex items-center">
                   <span className="text-primary mr-2">&#9632;</span> Frontend Development
                 </h3>
                 <div className="space-y-4">
@@ -88,8 +88,8 @@ export default function SkillsSection() {
             </Card>
 
             <Card className="glass-panel">
-              <CardContent className="p-6">
-                <h3 className="text-xl font-semibold mb-4 flex items-center">
+              <CardContent className="p-4 sm:p-6">
+                <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 flex items-center">
                   <span className="text-accent mr-2">&#9632;</span> Backend Development
                 </h3>
                 <div className="space-y-4">
@@ -123,8 +123,8 @@ export default function SkillsSection() {
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <Card className="glass-panel h-full">
-              <CardContent className="p-6 flex flex-col h-full">
-                <h3 className="text-xl font-semibold mb-4 flex items-center">
+              <CardContent className="p-4 sm:p-6 flex flex-col h-full">
+                <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 flex items-center">
                   <span className="text-primary mr-2">&#9632;</span> Other Technologies
                 </h3>
                 
@@ -158,22 +158,22 @@ export default function SkillsSection() {
           transition={{ duration: 0.5, delay: 0.5 }}
         >
           <Card className="glass-panel">
-            <CardContent className="p-6">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <CardContent className="p-4 sm:p-6">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
                 <div className="text-center p-4">
-                  <div className="text-4xl font-bold text-primary mb-2">5+</div>
+                  <div className="text-3xl sm:text-4xl font-bold text-primary mb-1 sm:mb-2">5+</div>
                   <p className="text-muted-foreground">Years Experience</p>
                 </div>
                 <div className="text-center p-4">
-                  <div className="text-4xl font-bold text-primary mb-2">50+</div>
+                  <div className="text-3xl sm:text-4xl font-bold text-primary mb-1 sm:mb-2">50+</div>
                   <p className="text-muted-foreground">Projects Completed</p>
                 </div>
                 <div className="text-center p-4">
-                  <div className="text-4xl font-bold text-primary mb-2">20+</div>
+                  <div className="text-3xl sm:text-4xl font-bold text-primary mb-1 sm:mb-2">20+</div>
                   <p className="text-muted-foreground">Happy Clients</p>
                 </div>
                 <div className="text-center p-4">
-                  <div className="text-4xl font-bold text-primary mb-2">10+</div>
+                  <div className="text-3xl sm:text-4xl font-bold text-primary mb-1 sm:mb-2">10+</div>
                   <p className="text-muted-foreground">Open Source Contrib.</p>
                 </div>
               </div>
