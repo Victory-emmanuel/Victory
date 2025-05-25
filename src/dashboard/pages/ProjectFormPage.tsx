@@ -190,13 +190,13 @@ export default function ProjectFormPage() {
   }
   
   return (
-    <div className="space-y-6">
-      <div className="flex items-center gap-4">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col xxs:flex-row items-start xxs:items-center gap-3 xxs:gap-4">
         <Button variant="outline" size="sm" onClick={() => navigate('/dashboard/projects')}>
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Projects
         </Button>
-        <h1 className="text-3xl font-bold">
+        <h1 className="text-2xl xxs:text-3xl font-bold">
           {isEditMode ? 'Edit Project' : 'Add New Project'}
         </h1>
       </div>
@@ -213,8 +213,8 @@ export default function ProjectFormPage() {
       )}
       
       <Card>
-        <CardContent className="p-6">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <CardContent className="p-4 sm:p-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 sm:space-y-6">
             <div className="space-y-2">
               <Label htmlFor="title">Project Title <span className="text-destructive">*</span></Label>
               <Input
@@ -239,7 +239,7 @@ export default function ProjectFormPage() {
             
             <div className="space-y-2">
               <Label>Tech Stack</Label>
-              <div className="flex gap-2">
+              <div className="flex flex-col xxs:flex-row gap-2">
                 <Input
                   value={techInput}
                   onChange={(e) => setTechInput(e.target.value)}
@@ -251,9 +251,9 @@ export default function ProjectFormPage() {
                     }
                   }}
                 />
-                <Button type="button" onClick={handleAddTech}>
-                  <Plus className="h-4 w-4" />
-                  <span className="sr-only">Add</span>
+                <Button type="button" onClick={handleAddTech} className="w-full xxs:w-auto justify-center">
+                  <Plus className="h-4 w-4 mr-2 xxs:mr-0" />
+                  <span className="xxs:sr-only">Add Technology</span>
                 </Button>
               </div>
               
@@ -341,7 +341,7 @@ export default function ProjectFormPage() {
               )}
             </div>
             
-            <div className="flex justify-end gap-4 pt-4">
+            <div className="flex flex-col xxs:flex-row justify-end gap-3 xxs:gap-4 pt-4">
               <Button
                 type="button"
                 variant="outline"

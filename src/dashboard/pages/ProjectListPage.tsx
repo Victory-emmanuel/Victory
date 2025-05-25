@@ -72,9 +72,9 @@ export default function ProjectListPage() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Projects</h1>
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col xxs:flex-row justify-between items-start xxs:items-center gap-3 xxs:gap-0">
+        <h1 className="text-2xl xxs:text-3xl font-bold">Projects</h1>
         <Link to="/dashboard/projects/new">
           <Button>
             <PlusCircle className="mr-2 h-4 w-4" />
@@ -110,8 +110,8 @@ export default function ProjectListPage() {
         </div>
       ) : projects && projects.length > 0 ? (
         <Card>
-          <CardContent className="p-0">
-            <Table>
+          <CardContent className="p-0 overflow-x-auto">
+            <Table className="min-w-[640px]">
               <TableHeader>
                 <TableRow>
                   <TableHead>Title</TableHead>
@@ -194,7 +194,7 @@ export default function ProjectListPage() {
         </Card>
       ) : (
         <Card>
-          <CardContent className="p-6 text-center">
+          <CardContent className="p-4 sm:p-6 text-center">
             <p className="text-muted-foreground mb-4">No projects found</p>
             <Link to="/dashboard/projects/new">
               <Button>

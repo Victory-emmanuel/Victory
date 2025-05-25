@@ -20,13 +20,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   };
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="min-h-screen bg-background flex flex-col sm:flex-row">
       {/* Sidebar */}
-      <div className="w-64 bg-card border-r border-border">
-        <div className="p-6">
+      <div className="w-full sm:w-64 bg-card border-b sm:border-b-0 sm:border-r border-border">
+        <div className="p-3 sm:p-6">
           <h1 className="text-xl font-bold text-primary">Admin Dashboard</h1>
         </div>
-        <nav className="px-4 py-2">
+        <nav className="px-3 sm:px-4 py-2">
           <ul className="space-y-2">
             <li>
               <Link to="/dashboard">
@@ -46,7 +46,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             </li>
           </ul>
         </nav>
-        <div className="absolute bottom-4 left-4 right-4">
+        <div className="hidden sm:block absolute bottom-4 left-4 right-4">
           <Button 
             variant="outline" 
             className="w-fit justify-start" 
@@ -59,8 +59,8 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
       </div>
 
       {/* Main content */}
-      <div className="flex-1 overflow-auto">
-        <header className="border-b border-border p-4 bg-card">
+      <div className="flex-1 overflow-auto w-full">
+        <header className="border-b border-border p-2 sm:p-4 bg-card">
           <div className="flex justify-between items-center">
             <h2 className="text-lg font-medium">
               {location.pathname === '/dashboard' && 'Dashboard Overview'}
@@ -69,13 +69,21 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
               {location.pathname.includes('/dashboard/projects/edit') && 'Edit Project'}
             </h2>
             <div className="flex items-center">
-              <span className="text-sm text-muted-foreground mr-2">
+              <span className="text-sm text-muted-foreground mr-2 hidden sm:inline">
                 {user.email}
               </span>
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="sm:hidden" 
+                onClick={handleSignOut}
+              >
+                <LogOut className="h-4 w-4" />
+              </Button>
             </div>
           </div>
         </header>
-        <main className="p-6">
+        <main className="p-3 sm:p-6">
           {children}
         </main>
       </div>

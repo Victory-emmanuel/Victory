@@ -9,9 +9,9 @@ export default function DashboardHome() {
   const { data: projects, isLoading, error } = useReadProjects();
 
   return (
-    <div className="space-y-6">
-      <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col xxs:flex-row justify-between items-start xxs:items-center gap-3 xxs:gap-0">
+        <h1 className="text-2xl xxs:text-3xl font-bold">Dashboard</h1>
         <Link to="/dashboard/projects/new">
           <Button>
             <PlusCircle className="mr-2 h-4 w-4" />
@@ -30,7 +30,7 @@ export default function DashboardHome() {
         </Alert>
       )}
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-3 xxs:gap-4 grid-cols-1 xs:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Total Projects</CardTitle>
@@ -100,8 +100,8 @@ export default function DashboardHome() {
         </Card>
       </div>
 
-      <div className="mt-8">
-        <h2 className="text-xl font-semibold mb-4">Recent Projects</h2>
+      <div className="mt-6 sm:mt-8">
+        <h2 className="text-lg xxs:text-xl font-semibold mb-3 sm:mb-4">Recent Projects</h2>
         {isLoading ? (
           <div className="space-y-4">
             {[...Array(3)].map((_, i) => (
@@ -113,7 +113,7 @@ export default function DashboardHome() {
             {projects.slice(0, 5).map((project) => (
               <Link key={project.id} to={`/dashboard/projects/edit/${project.id}`}>
                 <Card className="hover:bg-muted/50 transition-colors">
-                  <CardContent className="p-4 flex justify-between items-center">
+                  <CardContent className="p-3 xxs:p-4 flex flex-col xxs:flex-row gap-2 xxs:gap-0 xxs:justify-between items-start xxs:items-center">
                     <div>
                       <h3 className="font-medium">{project.title}</h3>
                       <p className="text-sm text-muted-foreground line-clamp-1">
@@ -130,7 +130,7 @@ export default function DashboardHome() {
           </div>
         ) : (
           <Card>
-            <CardContent className="p-6 text-center">
+            <CardContent className="p-4 sm:p-6 text-center">
               <p className="text-muted-foreground mb-4">No projects found</p>
               <Link to="/dashboard/projects/new">
                 <Button>
