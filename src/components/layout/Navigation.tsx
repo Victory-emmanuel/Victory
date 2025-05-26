@@ -77,18 +77,18 @@ export default function Navigation() {
         </div>
       </motion.nav>
 
-      {/* Mobile Navigation (Bottom) */}
+      {/* Mobile Navigation (Top) */}
       <motion.nav
-        className="fixed bottom-4 left-1/2 transform -translate-x-1/2 z-50 md:hidden w-[95%] max-w-sm"
-        initial={{ opacity: 0, y: 20 }}
+        className="fixed top-4 left-2 transform -translate-x-1/2 z-50 md:hidden w-[60%] max-w-sm"
+        initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <div className="glass-effect rounded-full px-2 sm:px-4 py-2 flex items-center justify-between gap-1 sm:gap-4 w-full">
+        <div className="glass-effect rounded-full px-2 sm:px-4 py-2 flex items-center justify-between gap-1 sm:gap-2 w-full overflow-hidden">
           {navItems.map((item) => (
             <motion.button
               key={item.id}
-              className={`p-1.5 sm:p-2 rounded-full ${
+              className={`p-1.5 sm:p-2 rounded-full flex-shrink-0 ${
                 activeSection === item.id 
                 ? 'text-primary bg-secondary/60' 
                 : 'text-muted-foreground hover:text-primary/80'

@@ -1,0 +1,43 @@
+[
+  {
+    "id": 1,
+    "title": "Full-Stack Developer",
+    "type": "Part-time",
+    "period": "05/2024 - Present",
+    "company": "The Brown Patience Company",
+    "location": "Lagos",
+    "description": "The Brown Patience Company is a firm for writers and by a writer, it offers variety of services from Book writing and Editing, Coaching for Authors and Content writing.",
+    "achievements": [
+      "Utilized TinyMce to streamline blog content management, leading to an increase in publishing efficiency and a more engaging user experience.",
+      "Enhanced website data management through efficient utilization of Firebase for blog data storage and admin authentication, resulting in improved overall website functionality.",
+      "Designed and optimized interfaces for a service-oriented platform, enhancing user experience and client engagement. Developed responsive and scalable components using React.js and Tailwind CSS, improving platform performance."
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Front-End Engineer",
+    "type": "Freelancer",
+    "period": "05/2025 - 05/2025",
+    "company": "Young Christian Fellowship (Y.C.F)",
+    "location": "Lagos",
+    "description": "YCF is digital space for youth-focused meetings to speak on Jesus and his works.",
+    "achievements": [
+      "I developed the Young Christian Fellowship website to create a welcoming digital space for youth-focused faith engagement. The goal was to provide a responsive, modern platform for sharing devotionals, event updates, and community outreach.",
+      "I implemented a clean UI with Tailwind CSS, ensured mobile optimization, and integrated dynamic content sections to support spiritual growth and community connection."
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Frontend Web Developer",
+    "type": "Part-time",
+    "period": "01/2024 - 02/2024",
+    "company": "Dimchi",
+    "location": "Lagos, Lagos State, Nigeria",
+    "description": "Dimchi is a startup company that deals with the sale of women's hair extensions, wigs, hair accessories and products.",
+    "achievements": [
+      "Independently built a responsive landing page for showcasing hair products, leveraging React.js, Styled-components, and Material-UI.",
+      "Demonstrated ability to architect and define front-end frameworks to address complex design challenges in accordance with creative direction.",
+      "Collaborated effectively with brand manager from different time zones, resulting in a 20% increase in website traffic, enhancing brand visibility and market reach."
+    ]
+  }
+]

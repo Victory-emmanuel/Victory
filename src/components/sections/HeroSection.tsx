@@ -43,7 +43,7 @@ export default function HeroSection() {
             }}
           >
             <span className="block">Hi, I'm </span>
-            <span className="text-gradient">Your Name</span>
+            <span className="text-gradient">Emmanuel Victory</span>
           </motion.h1>
           
           <motion.h2 
