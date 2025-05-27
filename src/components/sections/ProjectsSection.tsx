@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Github, ExternalLink, Loader2 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import type { Tables } from '@/lib/supabase';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
 
 type Project = Tables['projects']['Row'];
 
@@ -103,16 +104,10 @@ export default function ProjectsSection() {
             </Button>
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {filteredProjects.map((project, index) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <Card className="glass-panel overflow-hidden h-full">
+          <Carousel className="w-full">
+            <CarouselContent>
+              {filteredProjects.map((project, index) => (
+                <CarouselItem key={project.id} className="glass-panel overflow-hidden h-full">
                   <div className="relative h-48 overflow-hidden">
                     <img
                       src={project.image_url || fallbackImage}
@@ -170,24 +165,20 @@ export default function ProjectsSection() {
                       Code
                     </Button>
                   </CardFooter>
-                </Card>
-              </motion.div>
-            ))}
-          </div>
-        )}
-
-        {!isLoading && !error && filteredProjects.length > 0 && (
-          <div className="text-center mt-10">
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={() => setFilter('all')}
-            >
-              View All Projects
-            </Button>
-          </div>
-        )}
-      </div>
-    </section>
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <CarouselPrevious className="left-2" />
+            <CarouselNext className="right-2" />
+          </Carousel>
+      )}
+      
+      {!isLoading && !error && filteredProjects.length > 0 && (
+        <div className="text-center mt-10">
+          
+        </div>
+      )}
+    </div>
+  </section>
   );
 }
