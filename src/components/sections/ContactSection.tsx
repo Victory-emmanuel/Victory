@@ -48,8 +48,8 @@ export default function ContactSection() {
   };
 
   const contactInfo = [
-    { icon: <Mail className="text-primary" />, title: "Email", content: "your.email@example.com" },
-    { icon: <Phone className="text-primary" />, title: "Phone", content: "+1 (123) 456-7890" },
+    { icon: <Mail className="text-primary" />, title: "Email", content: "markeinglot.blog@gmail.com" },
+    { icon: <Phone className="text-primary" />, title: "WhatsApp", content: "+234-810-912-5793" },
     { icon: <MapPin className="text-primary" />, title: "Location", content: "City, Country" },
   ];
 
