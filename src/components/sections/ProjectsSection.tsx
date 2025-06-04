@@ -175,7 +175,13 @@ export default function ProjectsSection() {
       
       {!isLoading && !error && filteredProjects.length > 0 && (
         <div className="text-center mt-10">
-          
+          <Button
+            variant="outline"
+            size="lg"
+            onClick={() => setFilter('all')}
+          >
+            View All Projects
+          </Button>
         </div>
       )}
     </div>
