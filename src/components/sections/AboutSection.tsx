@@ -57,6 +57,13 @@ export default function AboutSection() {
             <Card className="glass-panel overflow-hidden">
               <CardContent className="p-0">
                 <div className="bg-gradient-to-br from-primary/20 to-accent/20 p-4 sm:p-6 md:p-8">
+                  <div className="flex justify-center mb-6">
+                    <img 
+                      src="/profile.jpeg" 
+                      alt="Victory Emmanuel Profile"
+                      className="rounded-full w-32 h-32 sm:w-40 sm:h-40 object-cover border-4 border-primary shadow-lg"
+                    />
+                  </div>
                   <h3 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">
                     Who am I
                   </h3>

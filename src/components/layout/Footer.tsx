@@ -15,7 +15,11 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-3 md:mb-0">
             <div className="flex items-center gap-2">
-              <img src="/logo.png" alt="CodeSquid Logo" className="w-6 h-6 inline-block align-middle" />
+              <img
+                src="/logo.png"
+                alt="CodeSquid Logo"
+                className="w-6 h-6 inline-block align-middle"
+              />
               <span className="text-lg font-bold text-gradient">CodeSquid</span>
             </div>
             <p className="text-xs sm:text-sm text-muted-foreground">
