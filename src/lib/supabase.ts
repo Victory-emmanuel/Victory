@@ -48,6 +48,41 @@ export type Tables = {
       featured?: boolean | null;
     };
   };
+  testimonials: {
+    Row: {
+      id: string;
+      name: string;
+      role: string;
+      company: string;
+      content: string;
+      rating: number;
+      avatar_url: string | null;
+      created_at: string;
+      featured: boolean | null;
+    };
+    Insert: {
+      id?: string;
+      name: string;
+      role: string;
+      company: string;
+      content: string;
+      rating: number;
+      avatar_url?: string | null;
+      created_at?: string;
+      featured?: boolean | null;
+    };
+    Update: {
+      id?: string;
+      name?: string;
+      role?: string;
+      company?: string;
+      content?: string;
+      rating?: number;
+      avatar_url?: string | null;
+      created_at?: string;
+      featured?: boolean | null;
+    };
+  };
   contact_messages: {
     Row: {
       id: string;

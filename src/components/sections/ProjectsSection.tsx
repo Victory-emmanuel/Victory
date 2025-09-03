@@ -54,31 +54,31 @@ export default function ProjectsSection() {
     filter === "all"
       ? projects
       : projects.filter((project) => {
-          // For 'featured' filter, check the featured field or the 'Featured' tag
-          if (filter === "featured") {
-            return (
-              project.featured ||
-              (project.tags && project.tags.includes("Featured"))
-            );
-          }
-          // For other filters, check if the project has the corresponding tag
-          // Handle special cases for proper capitalization
-          let expectedTag = "";
-          switch (filter) {
-            case "frontend":
-              expectedTag = "Frontend";
-              break;
-            case "backend":
-              expectedTag = "Backend";
-              break;
-            case "fullstack":
-              expectedTag = "Fullstack";
-              break;
-            default:
-              expectedTag = filter.charAt(0).toUpperCase() + filter.slice(1);
-          }
-          return project.tags && project.tags.includes(expectedTag);
-        });
+        // For 'featured' filter, check the featured field or the 'Featured' tag
+        if (filter === "featured") {
+          return (
+            project.featured ||
+            (project.tags && project.tags.includes("Featured"))
+          );
+        }
+        // For other filters, check if the project has the corresponding tag
+        // Handle special cases for proper capitalization
+        let expectedTag = "";
+        switch (filter) {
+          case "frontend":
+            expectedTag = "Frontend";
+            break;
+          case "backend":
+            expectedTag = "Backend";
+            break;
+          case "fullstack":
+            expectedTag = "Fullstack";
+            break;
+          default:
+            expectedTag = filter.charAt(0).toUpperCase() + filter.slice(1);
+        }
+        return project.tags && project.tags.includes(expectedTag);
+      });
 
   return (
     <section id="projects" className="py-20 min-h-screen">
@@ -139,87 +139,89 @@ export default function ProjectsSection() {
               {filteredProjects.map((project, index) => (
                 <CarouselItem
                   key={project.id}
-                  className="glass-panel overflow-hidden h-full"
+                  className="md:basis-1/2 basis-full"
                 >
-                  <div className="relative h-64 overflow-hidden">
-                    <img
-                      src={project.image_url || fallbackImage}
-                      alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
-                    />
-                    {(project.featured ||
-                      (project.tags && project.tags.includes("Featured"))) && (
-                      <Badge className="absolute top-2 right-2 bg-accent text-accent-foreground">
-                        Featured
-                      </Badge>
-                    )}
-                    {project.tags &&
-                      project.tags
-                        .filter((tag) => tag !== "Featured")
-                        .map((tag, idx) => (
+                  <Card className="glass-panel overflow-hidden h-full">
+                    <div className="relative h-64 overflow-hidden">
+                      <img
+                        src={project.image_url || fallbackImage}
+                        alt={project.title}
+                        className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
+                      />
+                      {(project.featured ||
+                        (project.tags && project.tags.includes("Featured"))) && (
+                          <Badge className="absolute top-2 right-2 bg-accent text-accent-foreground">
+                            Featured
+                          </Badge>
+                        )}
+                      {project.tags &&
+                        project.tags
+                          .filter((tag) => tag !== "Featured")
+                          .map((tag, idx) => (
+                            <Badge
+                              key={idx}
+                              className="absolute top-2 left-2 bg-primary text-primary-foreground"
+                            >
+                              {tag}
+                            </Badge>
+                          ))}
+                    </div>
+
+                    <CardContent className="p-6">
+                      <h3 className="text-xl font-semibold mb-2">
+                        {project.title}
+                      </h3>
+                      <p className="text-muted-foreground mb-4 line-clamp-10">
+                        {project.description || "No description available"}
+                      </p>
+
+                      <div className="flex flex-wrap gap-2">
+                        {project.tech_stack?.map((tech, idx) => (
                           <Badge
                             key={idx}
-                            className="absolute top-2 left-2 bg-primary text-primary-foreground"
+                            variant="outline"
+                            className="bg-secondary/20"
                           >
-                            {tag}
+                            {tech}
                           </Badge>
-                        ))}
-                  </div>
+                        )) || (
+                            <Badge variant="outline" className="bg-secondary/20">
+                              No technologies specified
+                            </Badge>
+                          )}
+                      </div>
+                    </CardContent>
 
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-semibold mb-2">
-                      {project.title}
-                    </h3>
-                    <p className="text-muted-foreground mb-4 line-clamp-10">
-                      {project.description || "No description available"}
-                    </p>
-
-                    <div className="flex flex-wrap gap-2">
-                      {project.tech_stack?.map((tech, idx) => (
-                        <Badge
-                          key={idx}
-                          variant="outline"
-                          className="bg-secondary/20"
+                    <CardFooter className="px-6 pb-6 pt-0 flex flex-wrap gap-2 sm:gap-4">
+                      {project.project_url && (
+                        <Button
+                          size="sm"
+                          className="flex gap-2 items-center"
+                          onClick={() =>
+                            window.open(project.project_url, "_blank")
+                          }
                         >
-                          {tech}
-                        </Badge>
-                      )) || (
-                        <Badge variant="outline" className="bg-secondary/20">
-                          No technologies specified
-                        </Badge>
+                          <ExternalLink size={16} />
+                          Live Demo
+                        </Button>
                       )}
-                    </div>
-                  </CardContent>
 
-                  <CardFooter className="px-6 pb-6 pt-0 flex flex-wrap gap-2 sm:gap-4">
-                    {project.project_url && (
                       <Button
                         size="sm"
+                        variant="outline"
                         className="flex gap-2 items-center"
                         onClick={() =>
-                          window.open(project.project_url, "_blank")
+                          window.open(
+                            project.github_repo_url || "https://github.com",
+                            "_blank"
+                          )
                         }
                       >
-                        <ExternalLink size={16} />
-                        Live Demo
+                        <Github size={16} />
+                        Code
                       </Button>
-                    )}
-
-                    <Button
-                      size="sm"
-                      variant="outline"
-                      className="flex gap-2 items-center"
-                      onClick={() =>
-                        window.open(
-                          project.github_repo_url || "https://github.com",
-                          "_blank"
-                        )
-                      }
-                    >
-                      <Github size={16} />
-                      Code
-                    </Button>
-                  </CardFooter>
+                    </CardFooter>
+                  </Card>
                 </CarouselItem>
               ))}
             </CarouselContent>
@@ -235,7 +237,7 @@ export default function ProjectsSection() {
               size="lg"
               onClick={() => setFilter("all")}
             >
-              View All Projects
+              ...
             </Button>
           </div>
         )}
