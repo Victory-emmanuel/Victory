@@ -108,7 +108,7 @@ export default function ProjectsSection() {
             <CarouselContent>
               {filteredProjects.map((project, index) => (
                 <CarouselItem key={project.id} className="glass-panel overflow-hidden h-full">
-                  <div className="relative h-48 overflow-hidden">
+                  <div className="relative h-64 overflow-hidden">
                     <img
                       src={project.image_url || fallbackImage}
                       alt={project.title}

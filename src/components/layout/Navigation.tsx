@@ -56,7 +56,7 @@ export default function Navigation() {
             className="text-xl font-bold text-gradient"
             whileHover={{ scale: 1.05 }}
           >
-            DevPortfolio
+          CodeSquid
           </motion.div>
           
           <ul className="flex items-center gap-6">
