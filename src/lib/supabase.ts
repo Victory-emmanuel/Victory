@@ -1,10 +1,10 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
+  throw new Error("Missing Supabase environment variables");
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
@@ -46,6 +46,35 @@ export type Tables = {
       created_at?: string;
       tags?: string[] | null;
       featured?: boolean | null;
+    };
+  };
+  contact_messages: {
+    Row: {
+      id: string;
+      name: string;
+      email: string;
+      subject: string;
+      message: string;
+      created_at: string;
+      is_read: boolean;
+    };
+    Insert: {
+      id?: string;
+      name: string;
+      email: string;
+      subject: string;
+      message: string;
+      created_at?: string;
+      is_read?: boolean;
+    };
+    Update: {
+      id?: string;
+      name?: string;
+      email?: string;
+      subject?: string;
+      message?: string;
+      created_at?: string;
+      is_read?: boolean;
     };
   };
 };

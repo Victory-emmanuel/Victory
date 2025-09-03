@@ -1,9 +1,11 @@
-import { ReactNode } from 'react';
-import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '@/context/AuthContext';
-import { Button } from '@/components/ui/button';
-import { LogOut, Home, FolderKanban } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { ReactNode } from "react";
+import { Navigate, useLocation } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { LogOut, Home, FolderKanban, Mail } from "lucide-react";
+import { Link } from "react-router-dom";
+import { useUnreadContactMessagesCount } from "@/hooks/useContactMessages";
 
 interface DashboardLayoutProps {
   children: ReactNode;
@@ -12,6 +14,7 @@ interface DashboardLayoutProps {
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const { user, loading, signOut } = useAuth();
   const location = useLocation();
+  const { data: unreadCount = 0 } = useUnreadContactMessagesCount();
 
   // Authentication is now handled by AuthGuard component
 
@@ -44,12 +47,25 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
                 </Button>
               </Link>
             </li>
+            <li>
+              <Link to="/dashboard/contacts">
+                <Button variant="ghost" className="w-full justify-start">
+                  <Mail className="mr-2 h-4 w-4" />
+                  Messages
+                  {unreadCount > 0 && (
+                    <Badge variant="destructive" className="ml-auto text-xs">
+                      {unreadCount}
+                    </Badge>
+                  )}
+                </Button>
+              </Link>
+            </li>
           </ul>
         </nav>
         <div className="hidden sm:block absolute bottom-4 left-4 right-4">
-          <Button 
-            variant="outline" 
-            className="w-fit justify-start" 
+          <Button
+            variant="outline"
+            className="w-fit justify-start"
             onClick={handleSignOut}
           >
             <LogOut className="mr-2 h-4 w-4" />
@@ -63,19 +79,23 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         <header className="border-b border-border p-2 sm:p-4 bg-card">
           <div className="flex justify-between items-center">
             <h2 className="text-lg font-medium">
-              {location.pathname === '/dashboard' && 'Dashboard Overview'}
-              {location.pathname === '/dashboard/projects' && 'Manage Projects'}
-              {location.pathname.includes('/dashboard/projects/new') && 'Add New Project'}
-              {location.pathname.includes('/dashboard/projects/edit') && 'Edit Project'}
+              {location.pathname === "/dashboard" && "Dashboard Overview"}
+              {location.pathname === "/dashboard/projects" && "Manage Projects"}
+              {location.pathname.includes("/dashboard/projects/new") &&
+                "Add New Project"}
+              {location.pathname.includes("/dashboard/projects/edit") &&
+                "Edit Project"}
+              {location.pathname === "/dashboard/contacts" &&
+                "Contact Messages"}
             </h2>
             <div className="flex items-center">
               <span className="text-sm text-muted-foreground mr-2 hidden sm:inline">
                 {user.email}
               </span>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 size="sm"
-                className="sm:hidden" 
+                className="sm:hidden"
                 onClick={handleSignOut}
               >
                 <LogOut className="h-4 w-4" />
@@ -83,9 +103,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
             </div>
           </div>
         </header>
-        <main className="p-3 sm:p-6">
-          {children}
-        </main>
+        <main className="p-3 sm:p-6">{children}</main>
       </div>
     </div>
   );

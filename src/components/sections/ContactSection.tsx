@@ -6,9 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Mail, Phone, MapPin, Send } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useCreateContactMessage } from "@/hooks/useContactMessages";
 
 export default function ContactSection() {
   const { toast } = useToast();
+  const { createContactMessage } = useCreateContactMessage();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -28,16 +30,21 @@ export default function ContactSection() {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Here we would normally connect to Supabase to store the message
-    // For now we'll simulate an API call with a timeout
     try {
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      await createContactMessage({
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+      });
+
       toast({
         title: "Message sent!",
         description: "Thank you for your message. I'll get back to you soon.",
       });
       setFormData({ name: "", email: "", subject: "", message: "" });
     } catch (error) {
+      console.error("Error sending message:", error);
       toast({
         title: "Error",
         description:
