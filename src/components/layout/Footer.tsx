@@ -1,6 +1,5 @@
-
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -15,12 +14,15 @@ export default function Footer() {
       <div className="container px-4 sm:px-6">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-3 md:mb-0">
-            <div className="text-lg sm:text-xl font-bold text-gradient">DevPortfolio</div>
+            <div className="flex items-center gap-2">
+              <img src="/logo.png" alt="CodeSquid Logo" className="w-6 h-6 inline-block align-middle" />
+              <span className="text-lg font-bold text-gradient">CodeSquid</span>
+            </div>
             <p className="text-xs sm:text-sm text-muted-foreground">
               Building the web with passion and precision.
             </p>
           </div>
-          
+
           <div className="text-center md:text-right">
             <p className="text-xs sm:text-sm text-muted-foreground">
               &copy; {currentYear} Your Name. All rights reserved.
@@ -28,7 +30,12 @@ export default function Footer() {
             <p className="text-xs text-muted-foreground mt-1">
               Built with React, Tailwind, and Three.js
               <span className="mx-1">•</span>
-              <Link to="/dashboard/login" className="hover:text-primary hover:underline transition-colors">Admin Access</Link>
+              <Link
+                to="/dashboard/login"
+                className="hover:text-primary hover:underline transition-colors"
+              >
+                Admin Access
+              </Link>
             </p>
           </div>
         </div>

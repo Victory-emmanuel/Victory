@@ -53,10 +53,11 @@ export default function Navigation() {
       >
         <div className="container flex items-center justify-between py-4">
           <motion.div 
-            className="text-xl font-bold text-gradient"
+            className="text-xl font-bold text-gradient flex items-center"
             whileHover={{ scale: 1.05 }}
           >
-          CodeSquid
+            <img src="/logo.png" alt="CodeSquid Logo" className="w-8 h-8 mr-2 inline-block align-middle" />
+            CodeSquid
           </motion.div>
           
           <ul className="flex items-center gap-6">
