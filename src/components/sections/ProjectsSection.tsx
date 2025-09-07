@@ -54,31 +54,31 @@ export default function ProjectsSection() {
     filter === "all"
       ? projects
       : projects.filter((project) => {
-          // For 'featured' filter, check the featured field or the 'Featured' tag
-          if (filter === "featured") {
-            return (
-              project.featured ||
-              (project.tags && project.tags.includes("Featured"))
-            );
-          }
-          // For other filters, check if the project has the corresponding tag
-          // Handle special cases for proper capitalization
-          let expectedTag = "";
-          switch (filter) {
-            case "frontend":
-              expectedTag = "Frontend";
-              break;
-            case "backend":
-              expectedTag = "Backend";
-              break;
-            case "fullstack":
-              expectedTag = "Fullstack";
-              break;
-            default:
-              expectedTag = filter.charAt(0).toUpperCase() + filter.slice(1);
-          }
-          return project.tags && project.tags.includes(expectedTag);
-        });
+        // For 'featured' filter, check the featured field or the 'Featured' tag
+        if (filter === "featured") {
+          return (
+            project.featured ||
+            (project.tags && project.tags.includes("Featured"))
+          );
+        }
+        // For other filters, check if the project has the corresponding tag
+        // Handle special cases for proper capitalization
+        let expectedTag = "";
+        switch (filter) {
+          case "frontend":
+            expectedTag = "Frontend";
+            break;
+          case "backend":
+            expectedTag = "Backend";
+            break;
+          case "fullstack":
+            expectedTag = "Fullstack";
+            break;
+          default:
+            expectedTag = filter.charAt(0).toUpperCase() + filter.slice(1);
+        }
+        return project.tags && project.tags.includes(expectedTag);
+      });
 
   return (
     <section id="projects" className="py-20 min-h-screen">
@@ -149,10 +149,10 @@ export default function ProjectsSection() {
                     />
                     {(project.featured ||
                       (project.tags && project.tags.includes("Featured"))) && (
-                      <Badge className="absolute top-2 right-2 bg-accent text-accent-foreground">
-                        Featured
-                      </Badge>
-                    )}
+                        <Badge className="absolute top-2 right-2 bg-accent text-accent-foreground">
+                          Featured
+                        </Badge>
+                      )}
                     {project.tags &&
                       project.tags
                         .filter((tag) => tag !== "Featured")
@@ -184,10 +184,10 @@ export default function ProjectsSection() {
                           {tech}
                         </Badge>
                       )) || (
-                        <Badge variant="outline" className="bg-secondary/20">
-                          No technologies specified
-                        </Badge>
-                      )}
+                          <Badge variant="outline" className="bg-secondary/20">
+                            No technologies specified
+                          </Badge>
+                        )}
                     </div>
                   </CardContent>
 
@@ -201,7 +201,7 @@ export default function ProjectsSection() {
                         }
                       >
                         <ExternalLink size={16} />
-                        Live Demo
+                        View
                       </Button>
                     )}
 
