@@ -127,11 +127,11 @@ export default function SkillsSection() {
                 <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 flex items-center">
                   <span className="text-primary mr-2">&#9632;</span> Other Technologies
                 </h3>
-                
+
                 <div className="flex-grow mb-6 relative h-60">
                   <Scene modelType="sphere" controlsEnabled={false} />
                 </div>
-                
+
                 <div className="flex flex-wrap gap-2">
                   {otherSkills.map((skill, index) => (
                     <motion.span
@@ -165,7 +165,7 @@ export default function SkillsSection() {
                   <p className="text-muted-foreground">Years Experience</p>
                 </div>
                 <div className="text-center p-4">
-                  <div className="text-3xl sm:text-4xl font-bold text-primary mb-1 sm:mb-2">50+</div>
+                  <div className="text-3xl sm:text-4xl font-bold text-primary mb-1 sm:mb-2">20+</div>
                   <p className="text-muted-foreground">Projects Completed</p>
                 </div>
                 <div className="text-center p-4">

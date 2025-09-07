@@ -202,7 +202,7 @@ export default function ProjectsSection() {
                           }
                         >
                           <ExternalLink size={16} />
-                          Live Demo
+                          View
                         </Button>
                       )}
 
