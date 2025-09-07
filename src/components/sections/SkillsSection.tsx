@@ -18,15 +18,13 @@ const backendSkills = [
   { name: "MongoDB / PostgreSQL", level: 80 },
   { name: "GraphQL", level: 70 },
   { name: "Supabase", level: 90 },
+  { name: "Firebase", level: 85 },
 ];
 
 const otherSkills = [
   "Docker",
   "CI/CD",
-  "AWS",
   "Git",
-  "Agile Methodologies",
-  "Jest / Testing",
   "Redux",
   "Figma",
   "UX/UI Design",
