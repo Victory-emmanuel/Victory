@@ -1,8 +1,8 @@
-
-import { motion } from 'framer-motion';
-import { Card, CardContent } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
-import Scene from '../three/Scene';
+import { useRef } from "react";
+import { useSpring, animated, useInView } from "@react-spring/web";
+import { Card, CardContent } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
+import Scene from "../three/Scene";
 
 const frontendSkills = [
   { name: "React / React Native", level: 95 },
@@ -21,27 +21,77 @@ const backendSkills = [
 ];
 
 const otherSkills = [
-  "Docker", "CI/CD", "AWS", "Git", "Agile Methodologies",
-  "Jest / Testing", "Redux", "Figma", "UX/UI Design", "Three.js"
+  "Docker",
+  "CI/CD",
+  "AWS",
+  "Git",
+  "Agile Methodologies",
+  "Jest / Testing",
+  "Redux",
+  "Figma",
+  "UX/UI Design",
+  "Three.js",
 ];
 
 export default function SkillsSection() {
-  const progressVariants = {
-    initial: { width: 0 },
-    animate: (level: number) => ({
-      width: `${level}%`,
-      transition: { duration: 1, delay: 0.3 }
-    })
-  };
+  // Refs for intersection observer
+  const titleRef = useRef<HTMLDivElement>(null);
+  const frontendRef = useRef<HTMLDivElement>(null);
+  const backendRef = useRef<HTMLDivElement>(null);
+  const otherRef = useRef<HTMLDivElement>(null);
+  const sceneRef = useRef<HTMLDivElement>(null);
+
+  // Intersection observer hooks
+  const titleInView = useInView(titleRef, { once: true, margin: "-100px" });
+  const frontendInView = useInView(frontendRef, {
+    once: true,
+    margin: "-100px",
+  });
+  const backendInView = useInView(backendRef, { once: true, margin: "-100px" });
+  const otherInView = useInView(otherRef, { once: true, margin: "-100px" });
+  const sceneInView = useInView(sceneRef, { once: true, margin: "-100px" });
+
+  // Spring animations
+  const titleSpring = useSpring({
+    opacity: titleInView ? 1 : 0,
+    transform: titleInView ? "translateY(0px)" : "translateY(20px)",
+    config: { tension: 120, friction: 14 },
+  });
+
+  const frontendSpring = useSpring({
+    opacity: frontendInView ? 1 : 0,
+    transform: frontendInView ? "translateX(0px)" : "translateX(-50px)",
+    delay: 200,
+    config: { tension: 120, friction: 14 },
+  });
+
+  const backendSpring = useSpring({
+    opacity: backendInView ? 1 : 0,
+    transform: backendInView ? "translateX(0px)" : "translateX(50px)",
+    delay: 400,
+    config: { tension: 120, friction: 14 },
+  });
+
+  const otherSpring = useSpring({
+    opacity: otherInView ? 1 : 0,
+    transform: otherInView ? "translateY(0px)" : "translateY(50px)",
+    delay: 600,
+    config: { tension: 120, friction: 14 },
+  });
+
+  const sceneSpring = useSpring({
+    opacity: sceneInView ? 1 : 0,
+    transform: sceneInView ? "scale(1)" : "scale(0.8)",
+    delay: 800,
+    config: { tension: 120, friction: 14 },
+  });
 
   return (
     <section id="skills" className="py-20 min-h-screen">
       <div className="container">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5 }}
+        <animated.div
+          ref={titleRef}
+          style={titleSpring}
           className="mb-12 text-center"
         >
           <h2 className="text-2xl sm:text-3xl font-bold mb-2">My Skills</h2>
@@ -49,20 +99,19 @@ export default function SkillsSection() {
           <p className="max-w-xl mx-auto text-muted-foreground">
             My tech stack and areas of expertise in development and design.
           </p>
-        </motion.div>
+        </animated.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mb-12">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.5 }}
+          <animated.div
+            ref={frontendRef}
+            style={frontendSpring}
             className="space-y-6"
           >
             <Card className="glass-panel">
               <CardContent className="p-4 sm:p-6">
                 <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 flex items-center">
-                  <span className="text-primary mr-2">&#9632;</span> Frontend Development
+                  <span className="text-primary mr-2">&#9632;</span> Frontend
+                  Development
                 </h3>
                 <div className="space-y-4">
                   {frontendSkills.map((skill, index) => (
@@ -72,14 +121,20 @@ export default function SkillsSection() {
                         <span>{skill.level}%</span>
                       </div>
                       <div className="h-2 bg-secondary/40 rounded overflow-hidden">
-                        <motion.div
-                          className="h-full bg-gradient-to-r from-primary to-accent"
-                          variants={progressVariants}
-                          initial="initial"
-                          whileInView="animate"
-                          viewport={{ once: true }}
-                          custom={skill.level}
-                        />
+                        {(() => {
+                          const progressSpring = useSpring({
+                            width: frontendInView ? `${skill.level}%` : "0%",
+                            delay: 300 + index * 100,
+                            config: { tension: 120, friction: 14 },
+                          });
+
+                          return (
+                            <animated.div
+                              style={progressSpring}
+                              className="h-full bg-gradient-to-r from-primary to-accent"
+                            />
+                          );
+                        })()}
                       </div>
                     </div>
                   ))}
@@ -90,7 +145,8 @@ export default function SkillsSection() {
             <Card className="glass-panel">
               <CardContent className="p-4 sm:p-6">
                 <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 flex items-center">
-                  <span className="text-accent mr-2">&#9632;</span> Backend Development
+                  <span className="text-accent mr-2">&#9632;</span> Backend
+                  Development
                 </h3>
                 <div className="space-y-4">
                   {backendSkills.map((skill, index) => (
@@ -100,86 +156,126 @@ export default function SkillsSection() {
                         <span>{skill.level}%</span>
                       </div>
                       <div className="h-2 bg-secondary/40 rounded overflow-hidden">
-                        <motion.div
-                          className="h-full bg-gradient-to-r from-accent to-primary"
-                          variants={progressVariants}
-                          initial="initial"
-                          whileInView="animate"
-                          viewport={{ once: true }}
-                          custom={skill.level}
-                        />
+                        {(() => {
+                          const progressSpring = useSpring({
+                            width: frontendInView ? `${skill.level}%` : "0%",
+                            delay: 300 + index * 100,
+                            config: { tension: 120, friction: 14 },
+                          });
+
+                          return (
+                            <animated.div
+                              style={progressSpring}
+                              className="h-full bg-gradient-to-r from-accent to-primary"
+                            />
+                          );
+                        })()}
                       </div>
                     </div>
                   ))}
                 </div>
               </CardContent>
             </Card>
-          </motion.div>
+          </animated.div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
+          <animated.div ref={backendRef} style={backendSpring}>
             <Card className="glass-panel h-full">
               <CardContent className="p-4 sm:p-6 flex flex-col h-full">
                 <h3 className="text-lg sm:text-xl font-semibold mb-3 sm:mb-4 flex items-center">
-                  <span className="text-primary mr-2">&#9632;</span> Other Technologies
+                  <span className="text-primary mr-2">&#9632;</span> Other
+                  Technologies
                 </h3>
 
-                <div className="flex-grow mb-6 relative h-60">
+                <animated.div
+                  ref={sceneRef}
+                  style={sceneSpring}
+                  className="flex-grow mb-6 relative h-60"
+                >
                   <Scene modelType="sphere" controlsEnabled={false} />
-                </div>
+                </animated.div>
 
-                <div className="flex flex-wrap gap-2">
-                  {otherSkills.map((skill, index) => (
-                    <motion.span
-                      key={index}
-                      className="px-3 py-1 rounded-full glass-effect text-sm"
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.1 * index }}
-                    >
-                      {skill}
-                    </motion.span>
-                  ))}
-                </div>
+                <animated.div
+                  ref={otherRef}
+                  style={otherSpring}
+                  className="flex flex-wrap gap-2"
+                >
+                  {otherSkills.map((skill, index) => {
+                    const skillSpring = useSpring({
+                      opacity: otherInView ? 1 : 0,
+                      transform: otherInView ? "scale(1)" : "scale(0.8)",
+                      delay: index * 100,
+                      config: { tension: 120, friction: 14 },
+                    });
+
+                    return (
+                      <animated.span
+                        key={index}
+                        style={skillSpring}
+                        className="px-3 py-1 rounded-full glass-effect text-sm"
+                      >
+                        {skill}
+                      </animated.span>
+                    );
+                  })}
+                </animated.div>
               </CardContent>
             </Card>
-          </motion.div>
+          </animated.div>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5, delay: 0.5 }}
-        >
-          <Card className="glass-panel">
-            <CardContent className="p-4 sm:p-6">
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
-                <div className="text-center p-4">
-                  <div className="text-3xl sm:text-4xl font-bold text-primary mb-1 sm:mb-2">5+</div>
-                  <p className="text-muted-foreground">Years Experience</p>
-                </div>
-                <div className="text-center p-4">
-                  <div className="text-3xl sm:text-4xl font-bold text-primary mb-1 sm:mb-2">20+</div>
-                  <p className="text-muted-foreground">Projects Completed</p>
-                </div>
-                <div className="text-center p-4">
-                  <div className="text-3xl sm:text-4xl font-bold text-primary mb-1 sm:mb-2">20+</div>
-                  <p className="text-muted-foreground">Happy Clients</p>
-                </div>
-                <div className="text-center p-4">
-                  <div className="text-3xl sm:text-4xl font-bold text-primary mb-1 sm:mb-2">10+</div>
-                  <p className="text-muted-foreground">Open Source Contrib.</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
+        {(() => {
+          const statsRef = useRef<HTMLDivElement>(null);
+          const statsInView = useInView(statsRef, {
+            once: true,
+            margin: "-100px",
+          });
+
+          const statsSpring = useSpring({
+            opacity: statsInView ? 1 : 0,
+            transform: statsInView ? "translateY(0px)" : "translateY(20px)",
+            delay: 500,
+            config: { tension: 120, friction: 14 },
+          });
+
+          return (
+            <animated.div ref={statsRef} style={statsSpring}>
+              <Card className="glass-panel">
+                <CardContent className="p-4 sm:p-6">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
+                    <div className="text-center p-4">
+                      <div className="text-3xl sm:text-4xl font-bold text-primary mb-1 sm:mb-2">
+                        5+
+                      </div>
+                      <p className="text-muted-foreground">Years Experience</p>
+                    </div>
+                    <div className="text-center p-4">
+                      <div className="text-3xl sm:text-4xl font-bold text-primary mb-1 sm:mb-2">
+                        20+
+                      </div>
+                      <p className="text-muted-foreground">
+                        Projects Completed
+                      </p>
+                    </div>
+                    <div className="text-center p-4">
+                      <div className="text-3xl sm:text-4xl font-bold text-primary mb-1 sm:mb-2">
+                        20+
+                      </div>
+                      <p className="text-muted-foreground">Happy Clients</p>
+                    </div>
+                    <div className="text-center p-4">
+                      <div className="text-3xl sm:text-4xl font-bold text-primary mb-1 sm:mb-2">
+                        10+
+                      </div>
+                      <p className="text-muted-foreground">
+                        Open Source Contrib.
+                      </p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </animated.div>
+          );
+        })()}
       </div>
     </section>
   );

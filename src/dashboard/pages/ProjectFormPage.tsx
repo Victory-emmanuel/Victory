@@ -91,6 +91,7 @@ export default function ProjectFormPage() {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { errors },
     reset,
   } = useForm<ProjectFormValues>({
@@ -109,21 +110,37 @@ export default function ProjectFormPage() {
   // Set form values when project data is loaded
   useEffect(() => {
     if (project) {
+      const projectTags = project.tags || [];
+      const isFeatured = project.featured || projectTags.includes("Featured");
+
+      // Ensure Featured tag is in sync with featured field
+      const syncedTags = isFeatured && !projectTags.includes("Featured")
+        ? [...projectTags, "Featured"]
+        : projectTags.filter(tag => tag !== "Featured" || isFeatured);
+
       reset({
         title: project.title,
         description: project.description || "",
         tech_stack: project.tech_stack || [],
         image_url: project.image_url || "",
         project_url: project.project_url || "",
-        tags: project.tags || [],
-        featured: project.featured || false,
+        tags: syncedTags,
+        featured: isFeatured,
       });
 
       setTechStack(project.tech_stack || []);
-      setTags(project.tags || []);
+      setTags(syncedTags);
       setImagePreview(project.image_url || null);
     }
   }, [project, reset]);
+
+  // Watch for changes in form tags and sync with local state
+  const watchedTags = watch("tags");
+  useEffect(() => {
+    if (watchedTags && Array.isArray(watchedTags)) {
+      setTags(watchedTags);
+    }
+  }, [watchedTags]);
 
   // Handle tech stack input
   const handleAddTech = () => {
@@ -152,7 +169,8 @@ export default function ProjectFormPage() {
 
     // If the tag is 'Featured', also update the featured field
     if (tag === "Featured") {
-      setValue("featured", !tags.includes("Featured"));
+      const isFeatured = newTags.includes("Featured");
+      setValue("featured", isFeatured);
     }
   };
 
@@ -180,11 +198,17 @@ export default function ProjectFormPage() {
   // Update form submission
   const onSubmit = async (data: ProjectFormValues) => {
     try {
+      // Ensure featured field is synced with Featured tag
+      const finalData = {
+        ...data,
+        featured: data.tags?.includes("Featured") || false,
+      };
+
       if (isEditMode && id) {
-        await updateProject(id, data);
+        await updateProject(id, finalData);
         toast.success("Project updated successfully");
       } else {
-        await createProject(data);
+        await createProject(finalData);
         toast.success("Project created successfully");
       }
 

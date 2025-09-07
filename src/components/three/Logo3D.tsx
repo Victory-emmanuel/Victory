@@ -1,74 +1,136 @@
-
-import { useRef, useEffect } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { useGLTF } from '@react-three/drei';
-import { Group } from 'three';
-import { usePortfolio } from '@/context/PortfolioContext';
+import { useEffect, useState } from "react";
+import { useSpring, animated } from "@react-spring/web";
+import { Illustration, Box, Shape } from "react-zdog";
+import { usePortfolio } from "@/context/PortfolioContext";
 
 export function Logo3D() {
-  const meshRef = useRef<Group>(null);
+  const [rotation, setRotation] = useState(0);
+  const [floatOffset, setFloatOffset] = useState(0);
   const { activeSection } = usePortfolio();
-  
-  // Simple cube mesh as fallback
-  useFrame((state, delta) => {
-    if (meshRef.current) {
+
+  // Animation loop using requestAnimationFrame
+  useEffect(() => {
+    let animationId: number;
+    let startTime = Date.now();
+
+    const animate = () => {
+      const currentTime = Date.now();
+      const elapsedTime = (currentTime - startTime) / 1000;
+
       // Gentle floating animation
-      meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.1;
-      
+      setFloatOffset(Math.sin(elapsedTime * 0.5) * 10);
+
       // Rotate based on active section
-      if (activeSection === 'home') {
-        meshRef.current.rotation.y += delta * 0.2;
+      if (activeSection === "home") {
+        setRotation((prev) => prev + 0.01);
       } else {
         // Slow down rotation when not in focus
-        meshRef.current.rotation.y += delta * 0.05;
+        setRotation((prev) => prev + 0.003);
       }
-    }
+
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animationId = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
+  }, [activeSection]);
+
+  const springProps = useSpring({
+    transform: `translateY(${floatOffset}px) rotateY(${rotation}rad)`,
+    config: { tension: 120, friction: 14 },
   });
 
   return (
-    <group ref={meshRef}>
-      <mesh castShadow receiveShadow>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial 
-          color="#a855f7" 
-          roughness={0.3}
-          metalness={0.7}
-          emissive="#a855f7"
-          emissiveIntensity={0.2}
+    <animated.div style={springProps}>
+      <Illustration
+        element="svg"
+        zoom={4}
+        rotate={{ x: 0.2, y: rotation }}
+        translate={{ y: floatOffset }}
+      >
+        <Box
+          width={100}
+          height={100}
+          depth={100}
+          color="#a855f7"
+          stroke={2}
+          fill={true}
         />
-      </mesh>
-      <mesh position={[0, 0, 1]} castShadow>
-        <torusGeometry args={[0.5, 0.2, 16, 32]} />
-        <meshStandardMaterial 
-          color="#f472b6" 
-          roughness={0.4}
-          metalness={0.6}
+        <Shape
+          path={[
+            { x: -25, y: 0 },
+            { x: 25, y: 0 },
+            { x: 0, y: -25 },
+            { x: 0, y: 25 },
+          ]}
+          color="#f472b6"
+          stroke={3}
+          translate={{ z: 60 }}
         />
-      </mesh>
-    </group>
+      </Illustration>
+    </animated.div>
   );
 }
 
 export function CodeSphere() {
-  const meshRef = useRef<Group>(null);
-  
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y = state.clock.elapsedTime * 0.1;
-    }
-  });
+  const [rotation, setRotation] = useState(0);
+
+  useEffect(() => {
+    let animationId: number;
+    let startTime = Date.now();
+
+    const animate = () => {
+      const currentTime = Date.now();
+      const elapsedTime = (currentTime - startTime) / 1000;
+
+      setRotation(elapsedTime * 0.1);
+      animationId = requestAnimationFrame(animate);
+    };
+
+    animationId = requestAnimationFrame(animate);
+
+    return () => {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
+  }, []);
 
   return (
-    <group ref={meshRef}>
-      <mesh castShadow>
-        <sphereGeometry args={[1, 32, 32]} />
-        <meshStandardMaterial 
-          color="#8b5cf6"
-          wireframe={true}
-          emissive="#8b5cf6"
-          emissiveIntensity={0.4}
-        />
-      </mesh>
-    </group>
+    <Illustration element="svg" zoom={4} rotate={{ y: rotation }}>
+      <Shape
+        path={[
+          { x: -40, y: -40 },
+          { x: 40, y: -40 },
+          { x: 40, y: 40 },
+          { x: -40, y: 40 },
+        ]}
+        color="#8b5cf6"
+        stroke={2}
+        fill={false}
+        closed={true}
+      />
+      <Shape
+        path={[
+          { x: -30, y: 0 },
+          { x: 30, y: 0 },
+        ]}
+        color="#8b5cf6"
+        stroke={2}
+      />
+      <Shape
+        path={[
+          { x: 0, y: -30 },
+          { x: 0, y: 30 },
+        ]}
+        color="#8b5cf6"
+        stroke={2}
+      />
+    </Illustration>
   );
 }

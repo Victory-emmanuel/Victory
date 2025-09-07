@@ -3,15 +3,15 @@ import { Link } from 'react-router-dom';
 import { useReadProjects, useDeleteProject } from '@/hooks/useProjects';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { 
-  Table, 
-  TableBody, 
-  TableCell, 
-  TableHead, 
-  TableHeader, 
-  TableRow 
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow
 } from '@/components/ui/table';
-import { 
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -22,11 +22,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { 
-  PlusCircle, 
-  Search, 
-  Pencil, 
-  Trash2, 
+import {
+  PlusCircle,
+  Search,
+  Pencil,
+  Trash2,
   AlertCircle,
   Loader2
 } from 'lucide-react';
@@ -38,18 +38,18 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 export default function ProjectListPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [projectToDelete, setProjectToDelete] = useState<string | null>(null);
-  
-  const { 
-    data: projects, 
-    isLoading, 
-    error, 
-    refetch 
+
+  const {
+    data: projects,
+    isLoading,
+    error,
+    refetch
   } = useReadProjects({ filter: searchTerm });
-  
-  const { 
-    deleteProject, 
-    isLoading: isDeleting, 
-    error: deleteError 
+
+  const {
+    deleteProject,
+    isLoading: isDeleting,
+    error: deleteError
   } = useDeleteProject();
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,7 +58,7 @@ export default function ProjectListPage() {
 
   const handleDelete = async () => {
     if (!projectToDelete) return;
-    
+
     try {
       await deleteProject(projectToDelete);
       toast.success('Project deleted successfully');
@@ -115,6 +115,7 @@ export default function ProjectListPage() {
               <TableHeader>
                 <TableRow>
                   <TableHead>Title</TableHead>
+                  <TableHead>Tags</TableHead>
                   <TableHead>Tech Stack</TableHead>
                   <TableHead>Created</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
@@ -123,14 +124,32 @@ export default function ProjectListPage() {
               <TableBody>
                 {projects.map((project) => (
                   <TableRow key={project.id}>
-                    <TableCell className="font-medium">{project.title}</TableCell>
+                    <TableCell className="font-medium">
+                      <div className="flex items-center gap-2">
+                        {project.title}
+                        {project.featured && (
+                          <Badge variant="default" className="text-xs">
+                            Featured
+                          </Badge>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-wrap gap-1">
+                        {project.tags?.map((tag, index) => (
+                          <Badge key={index} variant="outline" className="text-xs">
+                            {tag}
+                          </Badge>
+                        )) || <span className="text-muted-foreground text-xs">No tags</span>}
+                      </div>
+                    </TableCell>
                     <TableCell>
                       <div className="flex flex-wrap gap-1">
                         {project.tech_stack?.map((tech, index) => (
                           <Badge key={index} variant="secondary" className="text-xs">
                             {tech}
                           </Badge>
-                        ))}
+                        )) || <span className="text-muted-foreground text-xs">No tech stack</span>}
                       </div>
                     </TableCell>
                     <TableCell>
@@ -146,9 +165,9 @@ export default function ProjectListPage() {
                         </Link>
                         <AlertDialog>
                           <AlertDialogTrigger asChild>
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
+                            <Button
+                              variant="outline"
+                              size="sm"
                               onClick={() => setProjectToDelete(project.id)}
                             >
                               <Trash2 className="h-4 w-4 text-destructive" />
@@ -167,7 +186,7 @@ export default function ProjectListPage() {
                               <AlertDialogCancel onClick={() => setProjectToDelete(null)}>
                                 Cancel
                               </AlertDialogCancel>
-                              <AlertDialogAction 
+                              <AlertDialogAction
                                 onClick={handleDelete}
                                 disabled={isDeleting}
                                 className="bg-destructive text-destructive-foreground hover:bg-destructive/90"

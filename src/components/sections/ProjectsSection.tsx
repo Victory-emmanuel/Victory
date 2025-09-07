@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { useSpring, animated, useInView } from "@react-spring/web";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -54,40 +54,49 @@ export default function ProjectsSection() {
     filter === "all"
       ? projects
       : projects.filter((project) => {
-        // For 'featured' filter, check the featured field or the 'Featured' tag
-        if (filter === "featured") {
-          return (
-            project.featured ||
-            (project.tags && project.tags.includes("Featured"))
-          );
-        }
-        // For other filters, check if the project has the corresponding tag
-        // Handle special cases for proper capitalization
-        let expectedTag = "";
-        switch (filter) {
-          case "frontend":
-            expectedTag = "Frontend";
-            break;
-          case "backend":
-            expectedTag = "Backend";
-            break;
-          case "fullstack":
-            expectedTag = "Fullstack";
-            break;
-          default:
-            expectedTag = filter.charAt(0).toUpperCase() + filter.slice(1);
-        }
-        return project.tags && project.tags.includes(expectedTag);
-      });
+          // For 'featured' filter, check the featured field or the 'Featured' tag
+          if (filter === "featured") {
+            return (
+              project.featured ||
+              (project.tags && project.tags.includes("Featured"))
+            );
+          }
+          // For other filters, check if the project has the corresponding tag
+          // Handle special cases for proper capitalization
+          let expectedTag = "";
+          switch (filter) {
+            case "frontend":
+              expectedTag = "Frontend";
+              break;
+            // case "backend":
+            //   expectedTag = "Backend";
+            //   break;
+            case "fullstack":
+              expectedTag = "Fullstack";
+              break;
+            default:
+              expectedTag = filter.charAt(0).toUpperCase() + filter.slice(1);
+          }
+          return project.tags && project.tags.includes(expectedTag);
+        });
+
+  // Refs for intersection observer
+  const titleRef = useRef<HTMLDivElement>(null);
+  const titleInView = useInView(titleRef, { once: true, margin: "-100px" });
+
+  // Spring animations
+  const titleSpring = useSpring({
+    opacity: titleInView ? 1 : 0,
+    transform: titleInView ? "translateY(0px)" : "translateY(20px)",
+    config: { tension: 120, friction: 14 },
+  });
 
   return (
     <section id="projects" className="py-20 min-h-screen">
       <div className="container">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5 }}
+        <animated.div
+          ref={titleRef}
+          style={titleSpring}
           className="mb-12 text-center"
         >
           <h2 className="text-3xl font-bold mb-2">My Projects</h2>
@@ -111,7 +120,7 @@ export default function ProjectsSection() {
               )
             )}
           </div>
-        </motion.div>
+        </animated.div>
 
         {isLoading ? (
           <div className="flex justify-center items-center py-20">
@@ -149,11 +158,12 @@ export default function ProjectsSection() {
                         className="w-full h-full object-cover transition-transform duration-500 hover:scale-110"
                       />
                       {(project.featured ||
-                        (project.tags && project.tags.includes("Featured"))) && (
-                          <Badge className="absolute top-2 right-2 bg-accent text-accent-foreground">
-                            Featured
-                          </Badge>
-                        )}
+                        (project.tags &&
+                          project.tags.includes("Featured"))) && (
+                        <Badge className="absolute top-2 right-2 bg-accent text-accent-foreground">
+                          Featured
+                        </Badge>
+                      )}
                       {project.tags &&
                         project.tags
                           .filter((tag) => tag !== "Featured")
@@ -185,10 +195,10 @@ export default function ProjectsSection() {
                             {tech}
                           </Badge>
                         )) || (
-                            <Badge variant="outline" className="bg-secondary/20">
-                              No technologies specified
-                            </Badge>
-                          )}
+                          <Badge variant="outline" className="bg-secondary/20">
+                            No technologies specified
+                          </Badge>
+                        )}
                       </div>
                     </CardContent>
 

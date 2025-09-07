@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useRef } from "react";
+import { useSpring, animated, useInView } from "@react-spring/web";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -74,14 +74,47 @@ export default function ContactSection() {
     },
   ];
 
+  // Refs for intersection observer
+  const titleRef = useRef<HTMLDivElement>(null);
+  const leftCardRef = useRef<HTMLDivElement>(null);
+  const rightCardRef = useRef<HTMLDivElement>(null);
+
+  // Intersection observer hooks
+  const titleInView = useInView(titleRef, { once: true, margin: "-100px" });
+  const leftCardInView = useInView(leftCardRef, {
+    once: true,
+    margin: "-100px",
+  });
+  const rightCardInView = useInView(rightCardRef, {
+    once: true,
+    margin: "-100px",
+  });
+
+  // Spring animations
+  const titleSpring = useSpring({
+    opacity: titleInView ? 1 : 0,
+    transform: titleInView ? "translateY(0px)" : "translateY(20px)",
+    config: { tension: 120, friction: 14 },
+  });
+
+  const leftCardSpring = useSpring({
+    opacity: leftCardInView ? 1 : 0,
+    transform: leftCardInView ? "translateX(0px)" : "translateX(-50px)",
+    config: { tension: 120, friction: 14 },
+  });
+
+  const rightCardSpring = useSpring({
+    opacity: rightCardInView ? 1 : 0,
+    transform: rightCardInView ? "translateX(0px)" : "translateX(50px)",
+    config: { tension: 120, friction: 14 },
+  });
+
   return (
     <section id="contact" className="py-20 min-h-screen">
       <div className="container">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.5 }}
+        <animated.div
+          ref={titleRef}
+          style={titleSpring}
           className="mb-12 text-center"
         >
           <h2 className="text-2xl sm:text-3xl font-bold mb-2">Contact Me</h2>
@@ -89,15 +122,10 @@ export default function ContactSection() {
           <p className="max-w-xl mx-auto text-muted-foreground">
             Have a question or want to work together? Send me a message!
           </p>
-        </motion.div>
+        </animated.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.5 }}
-          >
+          <animated.div ref={leftCardRef} style={leftCardSpring}>
             <Card className="glass-panel h-full">
               <CardContent className="p-4 sm:p-6 md:p-8">
                 <h3 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">
@@ -105,24 +133,34 @@ export default function ContactSection() {
                 </h3>
 
                 <div className="space-y-6">
-                  {contactInfo.map((item, index) => (
-                    <motion.div
-                      key={index}
-                      initial={{ opacity: 0, y: 10 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: 0.2 * index }}
-                      className="flex items-center space-x-4"
-                    >
-                      <div className="p-3 rounded-full bg-secondary/20">
-                        {item.icon}
-                      </div>
-                      <div>
-                        <h4 className="text-sm font-medium">{item.title}</h4>
-                        <p className="text-muted-foreground">{item.content}</p>
-                      </div>
-                    </motion.div>
-                  ))}
+                  {contactInfo.map((item, index) => {
+                    const itemSpring = useSpring({
+                      opacity: leftCardInView ? 1 : 0,
+                      transform: leftCardInView
+                        ? "translateY(0px)"
+                        : "translateY(10px)",
+                      delay: index * 200,
+                      config: { tension: 120, friction: 14 },
+                    });
+
+                    return (
+                      <animated.div
+                        key={index}
+                        style={itemSpring}
+                        className="flex items-center space-x-4"
+                      >
+                        <div className="p-3 rounded-full bg-secondary/20">
+                          {item.icon}
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-medium">{item.title}</h4>
+                          <p className="text-muted-foreground">
+                            {item.content}
+                          </p>
+                        </div>
+                      </animated.div>
+                    );
+                  })}
                 </div>
 
                 <div className="mt-10">
@@ -214,14 +252,9 @@ export default function ContactSection() {
                 </div>
               </CardContent>
             </Card>
-          </motion.div>
+          </animated.div>
 
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
+          <animated.div ref={rightCardRef} style={rightCardSpring}>
             <Card className="glass-panel">
               <CardContent className="p-4 sm:p-6 md:p-8">
                 <h3 className="text-xl sm:text-2xl font-semibold mb-4 sm:mb-6">
@@ -334,7 +367,7 @@ export default function ContactSection() {
                 </form>
               </CardContent>
             </Card>
-          </motion.div>
+          </animated.div>
         </div>
       </div>
     </section>

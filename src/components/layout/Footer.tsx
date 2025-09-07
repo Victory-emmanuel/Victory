@@ -1,16 +1,23 @@
-import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
+import { useSpring, animated } from "@react-spring/web";
 import { Link } from "react-router-dom";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsVisible(true), 200);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const footerSpring = useSpring({
+    opacity: isVisible ? 1 : 0,
+    config: { tension: 120, friction: 14 },
+  });
 
   return (
-    <motion.footer
-      className="py-8 bg-secondary/20"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 0.2, duration: 0.5 }}
-    >
+    <animated.footer style={footerSpring} className="py-8 bg-secondary/20">
       <div className="container px-4 sm:px-6">
         <div className="flex flex-col md:flex-row justify-between items-center">
           <div className="mb-3 md:mb-0">
@@ -44,6 +51,6 @@ export default function Footer() {
           </div>
         </div>
       </div>
-    </motion.footer>
+    </animated.footer>
   );
 }

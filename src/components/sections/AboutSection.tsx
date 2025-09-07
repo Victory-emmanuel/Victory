@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { useSpring, animated, useInView } from "@react-spring/web";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FileText, Github, Linkedin, ExternalLink } from "lucide-react";
@@ -33,28 +33,59 @@ export default function AboutSection() {
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+
+  // Refs for intersection observer
+  const titleRef = useRef<HTMLDivElement>(null);
+  const leftCardRef = useRef<HTMLDivElement>(null);
+  const rightCardRef = useRef<HTMLDivElement>(null);
+
+  // Intersection observer hooks
+  const titleInView = useInView(titleRef, { once: true, margin: "-100px" });
+  const leftCardInView = useInView(leftCardRef, {
+    once: true,
+    margin: "-100px",
+  });
+  const rightCardInView = useInView(rightCardRef, {
+    once: true,
+    margin: "-100px",
+  });
+
+  // Spring animations
+  const titleSpring = useSpring({
+    opacity: titleInView ? 1 : 0,
+    transform: titleInView ? "translateY(0px)" : "translateY(20px)",
+    config: { tension: 120, friction: 14 },
+  });
+
+  const leftCardSpring = useSpring({
+    opacity: leftCardInView ? 1 : 0,
+    transform: leftCardInView ? "translateX(0px)" : "translateX(-50px)",
+    delay: 200,
+    config: { tension: 120, friction: 14 },
+  });
+
+  const rightCardSpring = useSpring({
+    opacity: rightCardInView ? 1 : 0,
+    transform: rightCardInView ? "translateX(0px)" : "translateX(50px)",
+    delay: 400,
+    config: { tension: 120, friction: 14 },
+  });
+
   return (
     <>
       <section id="about" className="py-20 min-h-screen flex items-center">
         <div className="container">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.5 }}
+          <animated.div
+            ref={titleRef}
+            style={titleSpring}
             className="mb-12 text-center"
           >
             <h2 className="text-2xl sm:text-3xl font-bold mb-2">About Me</h2>
             <div className="w-16 sm:w-20 h-1 bg-primary mx-auto mb-6 sm:mb-8"></div>
-          </motion.div>
+          </animated.div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-            >
+            <animated.div ref={leftCardRef} style={leftCardSpring}>
               <Card className="glass-panel overflow-hidden">
                 <CardContent className="p-0">
                   <div className="bg-gradient-to-br from-primary/20 to-accent/20 p-4 sm:p-6 md:p-8">
@@ -103,14 +134,9 @@ export default function AboutSection() {
                   </div>
                 </CardContent>
               </Card>
-            </motion.div>
+            </animated.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-            >
+            <animated.div ref={rightCardRef} style={rightCardSpring}>
               <Card className="glass-panel">
                 <CardContent className="p-4 sm:p-6 md:p-8">
                   <h3 className="text-xl sm:text-2xl font-semibold mb-3 sm:mb-4">
@@ -150,7 +176,7 @@ export default function AboutSection() {
                   </div>
                 </CardContent>
               </Card>
-            </motion.div>
+            </animated.div>
           </div>
         </div>
       </section>
